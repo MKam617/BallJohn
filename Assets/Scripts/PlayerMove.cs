@@ -4,15 +4,35 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Transform BallCenterPoint;
+    private Rigidbody _rigidbody;
+    private bool jump;
+    private bool canJump;
+
+    private void Start()
     {
-        
+        _rigidbody = this.gameObject.GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        //this.gameObject.transform.rotation = BallCenterPoint.rotation;
+
+        _rigidbody.AddForce(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")));
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            jump = true;
+        }
+    }
+ 
+
+    private void FixedUpdate()
+    {
+        if (jump)
+        {
+            _rigidbody.AddForce(Vector3.up * 300);
+            jump = false;
+        }
     }
 }
