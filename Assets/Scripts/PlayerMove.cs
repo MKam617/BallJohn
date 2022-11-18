@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
-    [SerializeField] private Transform BallCenterPoint;
     private Rigidbody _rigidbody;
     private bool jump;
     private bool canJump;
+    private int jumpQuantity;
+    [SerializeField] private int maxJumpQuantity = 1;
+    [SerializeField] private int speedOfMoving = 1;
 
     private void Start()
     {
@@ -16,33 +18,30 @@ public class PlayerMove : MonoBehaviour
 
     private void Update()
     {
-        _rigidbody.AddForce(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")));
+        _rigidbody.AddForce(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * speedOfMoving);
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
             jump = true;
-        }
-    }
-
-
-    private void OnCollisionEnter(Collision some)
-    {
-        if (some.gameObject.tag == "Ground")
-        {  
             canJump = true;
+            jumpQuantity += 1;
         }
     }
-
-
- 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+        {
+            jumpQuantity = 0;
+        }
+    }
+    
     private void FixedUpdate()
     {
-        if (canJump && jump)
+        if (jump && canJump && jumpQuantity <= maxJumpQuantity)
         {
             _rigidbody.AddForce(Vector3.up * 300);
-            canJump = false;
-            jump = false;
-        }
+            jump = false;           
+        } 
     }
 
 }
