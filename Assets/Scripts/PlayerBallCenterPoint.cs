@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlayerBallCenterPoint : MonoBehaviour
 {
-    [SerializeField] private Transform PlayerBall;
+    // [SerializeField] private Transform PlayerBall;
 
 
-    private void Update()
-    {
-        this.gameObject.transform.position = PlayerBall.position;
-    }
+    // private void Update()
+    // {
+    //     this.gameObject.transform.position = PlayerBall.position;
+    // }
 }

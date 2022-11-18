@@ -16,8 +16,6 @@ public class PlayerMove : MonoBehaviour
 
     private void Update()
     {
-        //this.gameObject.transform.rotation = BallCenterPoint.rotation;
-
         _rigidbody.AddForce(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")));
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -25,14 +23,26 @@ public class PlayerMove : MonoBehaviour
             jump = true;
         }
     }
- 
 
+
+    private void OnCollisionEnter(Collision some)
+    {
+        if (some.gameObject.tag == "Ground")
+        {  
+            canJump = true;
+        }
+    }
+
+
+ 
     private void FixedUpdate()
     {
-        if (jump)
+        if (canJump && jump)
         {
             _rigidbody.AddForce(Vector3.up * 300);
+            canJump = false;
             jump = false;
         }
     }
+
 }
