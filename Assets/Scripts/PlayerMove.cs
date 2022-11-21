@@ -8,8 +8,11 @@ public class PlayerMove : MonoBehaviour
     private bool jump;
     private bool canJump;
     private int jumpQuantity;
-    [SerializeField] private int maxJumpQuantity = 1;
     [SerializeField] private int speedOfMoving = 1;
+    [SerializeField] private int maxJumpQuantity = 1;
+    [SerializeField] private int jumpingForce = 300;
+
+    [SerializeField] private PlayerBallCenterPoint playerBallCenterPoint;
 
     private void Start()
     {
@@ -18,7 +21,24 @@ public class PlayerMove : MonoBehaviour
 
     private void Update()
     {
-        _rigidbody.AddForce(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * speedOfMoving);
+        if (Input.GetKey(KeyCode.W))
+        {
+            _rigidbody.AddForce(new Vector3(1 * playerBallCenterPoint.sin,0,1 * playerBallCenterPoint.cos) * speedOfMoving);
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            _rigidbody.AddForce(new Vector3(-1 * playerBallCenterPoint.sin,0,-1 * playerBallCenterPoint.cos) * speedOfMoving);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            _rigidbody.AddForce(new Vector3(1 * playerBallCenterPoint.cos,0,1 * playerBallCenterPoint.sin) * speedOfMoving);
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            _rigidbody.AddForce(new Vector3(-1 * playerBallCenterPoint.cos,0,-1 * playerBallCenterPoint.sin) * speedOfMoving);
+        }
+
+
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -27,6 +47,7 @@ public class PlayerMove : MonoBehaviour
             jumpQuantity += 1;
         }
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Ground")
@@ -39,7 +60,7 @@ public class PlayerMove : MonoBehaviour
     {
         if (jump && canJump && jumpQuantity <= maxJumpQuantity)
         {
-            _rigidbody.AddForce(Vector3.up * 300);
+            _rigidbody.AddForce(Vector3.up * jumpingForce);
             jump = false;           
         } 
     }
